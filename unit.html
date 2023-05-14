@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Unit Converter</title>
+    <link rel="icon" type="unit" href="unit.png">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            /* background-color: #f1f1f1; */
+            background-image: url('bg.jpg');
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-size: cover;
+        }
+
+        h1 {
+            text-align: center;
+            color: #ff000d;
+            font-size: xx-large;
+            text-shadow: 2px 4px 4px #060404;
+        }
+
+        .container {
+            margin: 170px auto;
+            position: relative;
+            right: 5%;
+            max-width: 600px;
+            padding: 25px;
+            background-color: #4a8d24a8;
+            border-radius: 0px;
+            box-shadow: 10px 10px 5px 2px rgb(0, 0, 0);
+            animation-name: slideIn;
+            animation-duration: 0.7s;
+            animation-fill-mode: both;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 10px;
+        }
+
+        label {
+            font-size: 18px;
+            color: #000000;
+            margin-bottom: 5px;
+        }
+
+        input {
+            font-size: 16px;
+            padding: 10px;
+            border-radius: 5px;
+            border: none;
+            background-color: #b71b1b86;
+            box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
+            transition: box-shadow 0.3s ease-in-out;
+        }
+
+        input:focus {
+            box-shadow: 0px 0px 5px rgba(238, 14, 14, 0.4);
+        }
+
+        .select-group {
+            display: flex;
+            margin-bottom: 10px;
+        }
+
+        .select-group select {
+            flex: 1;
+            font-size: 16px;
+            padding: 10px;
+            border-radius: 5px;
+            border: none;
+            background-color: #6d1e77b9;
+            box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
+            transition: box-shadow 0.3s ease-in-out;
+            margin-right: 10px;
+        }
+
+        .select-group select:last-child {
+            margin-right: 0;
+            background-color: #686267bd;
+        }
+
+        .select-group select:focus {
+            box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.4);
+        }
+
+        .btn {
+            font-size: 18px;
+            padding: 10px 20px;
+            background-color: #0f0692c2;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            position: relative;
+            cursor: pointer;
+            transition: background-color 0.3s ease-in-out;
+        }
+
+        .rst {
+            font-size: 18px;
+            padding: 10px 20px;
+            background-color: #b9165f;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            position: relative;
+            left: 67%;
+            cursor: pointer;
+            transition: background-color 0.3s ease-in-out;
+        }
+
+        .btn:hover {
+            background-color: #333;
+        }
+
+        .rst:hover {
+            background-color: #c52727d3;
+        }
+
+        .result-group {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            opacity: 0;
+            animation-name: fadeIn;
+            animation-duration: 0.5s;
+            animation-delay: 0.5s;
+            animation-fill-mode: both;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        .result-group p {
+            font-size: 24px;
+            color: #000000;
+            margin-bottom: 5px;
+        }
+
+        .result-group span {
+            font-size: 18px;
+            color: #7a2424;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Unit Converter</h1>
+        <form>
+            <div class="form-group">
+                <label for="input-number">Enter a number:</label>
+                <input type="number" id="input-number" required>
+            </div>
+            <div class="select-group">
+                <select id="from-unit">
+
+                    <option value="hm">Hectometer</option>
+                    <option value="km">Kilometer</option>
+                    <option value="m">Meter</option>
+                    <option value="cm">Centimeter</option>
+                    <option value="mm">Millimeter</option>
+                    <option value="ml">Mile</option>
+                    <option value="yd">Yard</option>
+                    <option value="ft">Foot</option>
+                    <option value="in">Inch</option>
+                </select>
+                <select id="to-unit">
+                    <option value="hm">Hectometer</option>
+                    <option value="km">Kilometer</option>
+                    <option value="m">Meter</option>
+                    <option value="cm">Centimeter</option>
+                    <option value="mm">Millimeter</option>
+                    <option value="ml">Mile</option>
+                    <option value="yd">Yard</option>
+                    <option value="ft">Foot</option>
+                    <option value="in">Inch</option>
+                </select>
+            </div>
+            <button class="btn" type="submit">Convert</button>
+            <input class="rst" type="reset" value="Reset">
+        </form>
+        <div class="result-group">
+            <p id="result"></p>
+           
+        </div>
+    </div>
+    <script>
+        const form = document.querySelector('form');
+        const inputNumber = document.getElementById('input-number');
+        const fromUnit = document.getElementById('from-unit');
+        const toUnit = document.getElementById('to-unit');
+        const result = document.getElementById('result');
+        const resultGroup = document.querySelector('.result-group');
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const inputValue = parseFloat(inputNumber.value);
+            const fromValue = fromUnit.value;
+            const toValue = toUnit.value;
+            let convertedValue;
+// hectometer
+            if (fromValue === 'hm' && toValue === 'km') {
+                convertedValue = inputValue / 10;
+            }
+             else if (fromValue === 'hm' && toValue === 'm') {
+                convertedValue = inputValue * 100;
+            }
+             else if (fromValue === 'hm' && toValue === 'cm') {
+                convertedValue = inputValue * 10000;
+            } 
+            else if (fromValue === 'hm' && toValue === 'mm') {
+                convertedValue = inputValue * 1000000;
+            }
+             else if (fromValue === 'hm' && toValue === 'ml') {
+                convertedValue = inputValue / 16.093;
+            }
+             else if (fromValue === 'hm' && toValue === 'yd') {
+                convertedValue = inputValue * 109.361;
+            }
+            else if (fromValue === 'hm' && toValue === 'ft') {
+                convertedValue = inputValue * 328.1;
+            }
+            else if (fromValue === 'hm' && toValue === 'in') {
+                convertedValue = inputValue * 3937;
+            }
+            //kilometer
+            else if (fromValue === 'km' && toValue === 'hm') {
+                convertedValue = inputValue * 10;
+            }
+             else if (fromValue === 'km' && toValue === 'm') {
+                convertedValue = inputValue * 1000;
+            } 
+            else if (fromValue === 'km' && toValue === 'cm') {
+                convertedValue = inputValue * 100000;
+            }
+             else if (fromValue === 'km' && toValue === 'mm') {
+                convertedValue = inputValue * 1000000;
+            }
+             else if (fromValue === 'km' && toValue === 'ml') {
+                convertedValue = inputValue / 1.609;
+            }
+            else if (fromValue === 'km' && toValue === 'yd') {
+                convertedValue = inputValue *  1094;
+            }
+            else if (fromValue === 'km' && toValue === 'ft') {
+                convertedValue = inputValue *  3281;
+
+            }
+            else if (fromValue === 'km' && toValue === 'in') {
+                convertedValue = inputValue *  39370;
+
+            }
+            //meter
+            else if (fromValue === 'm' && toValue === 'hm') {
+                convertedValue = inputValue / 100;
+            }
+             else if (fromValue === 'm' && toValue === 'km') {
+                convertedValue = inputValue / 1000;
+            } 
+            else if (fromValue === 'm' && toValue === 'cm') {
+                convertedValue = inputValue * 100;
+            }
+             else if (fromValue === 'm' && toValue === 'mm') {
+                convertedValue = inputValue * 1000;
+            }
+             else if (fromValue === 'm' && toValue === 'ml') {
+                convertedValue = inputValue / 1609;
+            }
+            else if (fromValue === 'm' && toValue === 'yd') {
+                convertedValue = inputValue *  1.094;
+            }
+            else if (fromValue === 'm' && toValue === 'ft') {
+                convertedValue = inputValue *  3.281;
+
+            }
+            else if (fromValue === 'm' && toValue === 'in') {
+                convertedValue = inputValue *  39.370;
+
+            }
+            //centimeter
+            else if (fromValue === 'cm' && toValue === 'hm') {
+                convertedValue = inputValue / 10000;
+            }
+             else if (fromValue === 'cm' && toValue === 'km') {
+                convertedValue = inputValue / 100000;
+            } 
+            else if (fromValue === 'cm' && toValue === 'm') {
+                convertedValue = inputValue / 100;
+            }
+             else if (fromValue === 'cm' && toValue === 'mm') {
+                convertedValue = inputValue * 10;
+            }
+             else if (fromValue === 'cm' && toValue === 'ml') {
+                convertedValue = inputValue / 160900;
+            }
+            else if (fromValue === 'cm' && toValue === 'yd') {
+                convertedValue = inputValue /   91.44;
+            }
+            else if (fromValue === 'cm' && toValue === 'ft') {
+                convertedValue = inputValue *  30.48;
+
+            }
+            else if (fromValue === 'cm' && toValue === 'in') {
+                convertedValue = inputValue *  2.54;
+
+            }
+             //milimeter
+             else if (fromValue === 'mm' && toValue === 'hm') {
+                convertedValue = inputValue / 100000;
+            }
+             else if (fromValue === 'mm' && toValue === 'km') {
+                convertedValue = inputValue / 1000000;
+            } 
+            else if (fromValue === 'mm' && toValue === 'm') {
+                convertedValue = inputValue / 1000;
+            }
+             else if (fromValue === 'mm' && toValue === 'cm') {
+                convertedValue = inputValue / 10;
+            }
+             else if (fromValue === 'mm' && toValue === 'ml') {
+                convertedValue = inputValue / 1609000;
+            }
+            else if (fromValue === 'mm' && toValue === 'yd') {
+                convertedValue = inputValue /    914.4;
+            }
+            else if (fromValue === 'mm' && toValue === 'ft') {
+                convertedValue = inputValue *  304.8;
+
+            }
+            else if (fromValue === 'mm' && toValue === 'in') {
+                convertedValue = inputValue *  25.4;
+
+            }
+             //mile
+             else if (fromValue === 'ml' && toValue === 'hm') {
+                convertedValue = inputValue *16.093;
+            }
+             else if (fromValue === 'ml' && toValue === 'km') {
+                convertedValue = inputValue *1.609;
+            } 
+            else if (fromValue === 'ml' && toValue === 'm') {
+                convertedValue = inputValue *1609;
+            }
+             else if (fromValue === 'ml' && toValue === 'cm') {
+                convertedValue = inputValue * 160900;
+            }
+             else if (fromValue === 'ml' && toValue === 'mm') {
+                convertedValue = inputValue * 1609000;
+            }
+            else if (fromValue === 'ml' && toValue === 'yd') {
+                convertedValue = inputValue * 1760;
+            }
+            else if (fromValue === 'ml' && toValue === 'ft') {
+                convertedValue = inputValue *  5280;
+
+            }
+            else if (fromValue === 'ml' && toValue === 'in') {
+                convertedValue = inputValue *  63360;
+
+            }
+             //yard
+             else if (fromValue === 'yd' && toValue === 'hm') {
+                convertedValue = inputValue /109.4;
+            }
+             else if (fromValue === 'yd' && toValue === 'km') {
+                convertedValue = inputValue /1094;
+            } 
+            else if (fromValue === 'yd' && toValue === 'm') {
+                convertedValue = inputValue /1.094;
+            }
+             else if (fromValue === 'yd' && toValue === 'cm') {
+                convertedValue = inputValue * 91.44;
+            }
+             else if (fromValue === 'yd' && toValue === 'mm') {
+                convertedValue = inputValue * 914.4;
+            }
+            else if (fromValue === 'yd' && toValue === 'ml') {
+                convertedValue = inputValue / 1760;
+            }
+            else if (fromValue === 'yd' && toValue === 'ft') {
+                convertedValue = inputValue *  3;
+
+            }
+            else if (fromValue === 'yd' && toValue === 'in') {
+                convertedValue = inputValue * 36;
+
+            }
+            //foot
+            else if (fromValue === 'ft' && toValue === 'hm') {
+                convertedValue = inputValue /328.1;
+            }
+             else if (fromValue === 'ft' && toValue === 'km') {
+                convertedValue = inputValue /3281;
+            } 
+            else if (fromValue === 'ft' && toValue === 'm') {
+                convertedValue = inputValue /3.281;
+            }
+             else if (fromValue === 'ft' && toValue === 'cm') {
+                convertedValue = inputValue * 30.48;
+            }
+             else if (fromValue === 'ft' && toValue === 'mm') {
+                convertedValue = inputValue * 304.8;
+            }
+            else if (fromValue === 'ft' && toValue === 'ml') {
+                convertedValue = inputValue / 5280;
+            }
+            else if (fromValue === 'ft' && toValue === 'yd') {
+                convertedValue = inputValue /  3;
+
+            }
+            else if (fromValue === 'ft' && toValue === 'in') {
+                convertedValue = inputValue * 12;
+
+            }
+             //inch
+             else if (fromValue === 'in' && toValue === 'hm') {
+                convertedValue = inputValue /3937;
+            }
+             else if (fromValue === 'in' && toValue === 'km') {
+                convertedValue = inputValue /39370;
+            } 
+            else if (fromValue === 'in' && toValue === 'm') {
+                convertedValue = inputValue /39.37;
+            }
+             else if (fromValue === 'in' && toValue === 'cm') {
+                convertedValue = inputValue * 2.54;
+            }
+             else if (fromValue === 'in' && toValue === 'mm') {
+                convertedValue = inputValue * 25.4;
+            }
+            else if (fromValue === 'in' && toValue === 'ml') {
+                convertedValue = inputValue / 63360;
+            }
+            else if (fromValue === 'in' && toValue === 'yd') {
+                convertedValue = inputValue /  36;
+
+            }
+            else if (fromValue === 'in' && toValue === 'ft') {
+                convertedValue = inputValue / 12;
+
+            }
+            
+            else {
+                convertedValue = inputValue;
+            }
+
+            result.textContent = convertedValue.toFixed(2);
+            resultGroup.style.opacity = 1;
+        });
+    </script>
+</body>
+
+</html>
